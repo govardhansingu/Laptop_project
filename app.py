@@ -62,7 +62,7 @@ if st.session_state.model is not None:
 
     # Define original input columns used before one-hot encoding
     input_columns = ['Company', 'Typename', 'Ram', 'Weight', 'Touchscreen', 'Ips', 'Inches',
-                     'Cpu_Processor', 'Gpu_brand', 'HDD', 'SSD', 'OpSys', 'ppi']
+                     'Cpu_Processor', 'Gpu_brand', 'HDD', 'SSD', 'OpSys', 'OS', 'ppi']
 
     input_data_raw = {}
     for col in input_columns:

@@ -2,9 +2,9 @@ def show_eda(df):
     import streamlit as st
     import matplotlib.pyplot as plt
     import seaborn as sns
-    import io
-
-    # BEFORE CLEANING
+    import pandas as pd
+	
+	# BEFORE CLEANING
     st.subheader("🧾 Dataset Overview: Before Cleaning")
 
     st.text("📌 Columns:")
@@ -21,37 +21,21 @@ def show_eda(df):
     df.info(buf=buffer)
     s = buffer.getvalue()
     st.text(s)
-
-    # ROUND RAM & PPI
+	
+	
+    # Round off RAM & PPI
     if 'Ram' in df.columns:
         df['Ram'] = df['Ram'].round()
     if 'PPI' in df.columns:
         df['PPI'] = df['PPI'].round(2)
 
-    # OUTLIER HANDLING
-    numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
+    numeric_cols = df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+
+    # Treat outliers using mean for numeric columns
     for col in numeric_cols:
         mean_val = df[col].mean()
         std_val = df[col].std()
         df[col] = df[col].apply(lambda x: mean_val if abs(x - mean_val) > 3 * std_val else x)
-
-    # AFTER CLEANING
-    st.subheader("🧾 Dataset Overview: After Cleaning")
-
-    st.text("📌 Columns:")
-    st.write(df.columns.tolist())
-
-    st.text("📌 Missing Values:")
-    st.write(df.isnull().sum())
-
-    st.text("📌 Summary Statistics:")
-    st.write(df.describe())
-
-    st.text("📌 DataFrame Info:")
-    buffer = io.StringIO()
-    df.info(buf=buffer)
-    s = buffer.getvalue()
-    st.text(s)
 
     st.subheader("💡 Price Distribution")
     fig, ax = plt.subplots(figsize=(6, 4))
